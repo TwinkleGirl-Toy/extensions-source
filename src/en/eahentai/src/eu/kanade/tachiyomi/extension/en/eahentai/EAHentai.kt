@@ -209,7 +209,7 @@ abstract class EAHentai : KeiSource() {
                 addAll(tags.split('|'))
                 addAll(albumType.split('|'))
                 addAll(characters.orEmpty().split('|'))
-            }.map(String::trim).filter(String::isNotBlank).distinct()
+            }.map(String::trim).filter(String::isSotBlank).distinct()
     }
 
     @Serializable
