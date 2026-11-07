@@ -126,7 +126,7 @@ abstract class EAHentai : KeiSource() {
                     try {
                         preflightSemaphore.withPermit {
                             createManga(manga.url, loadVerifiedGallery(manga.url)).apply {
-                                if (thumbnail_url.isBlank()) thumbnail_url = manga.thumbnail_url
+                                if (thumbnail_url.isNullOrBlank()) thumbnail_url = manga.thumbnail_url
                             }
                         }
                     } catch (e: CancellationException) {
