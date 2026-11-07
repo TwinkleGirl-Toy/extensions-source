@@ -158,7 +158,7 @@ abstract class EAHentai : KeiSource() {
         ).parseAs<List<GalleryDto>>()
         val gallery = galleries.firstOrNull() ?: throw IOException("Gallery data was not returned")
 
-        if (gallery.tags.isBlanks()) {
+        if (gallery.tags.isBlank()) {
             throw IOException("Gallery tags could not be verified")
         }
         if (ContentBlocklist.blocks(gallery.title, gallery.allTags)) {
@@ -209,7 +209,7 @@ abstract class EAHentai : KeiSource() {
                 addAll(tags.split('|'))
                 addAll(albumType.split('|'))
                 addAll(characters.orEmpty().split('|'))
-            }.map(String::trim).filter(String::isSotBlank).distinct()
+            }.map(String::trim).filter(String::isNotBlank).distinct()
     }
 
     @Serializable
