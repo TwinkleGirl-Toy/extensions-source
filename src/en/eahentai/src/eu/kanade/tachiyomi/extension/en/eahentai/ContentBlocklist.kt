@@ -5,39 +5,51 @@ import java.text.Normalizer
 /** Conservative denylist for child-coded, underage, and school-age gallery metadata. */
 internal object ContentBlocklist {
     private val blockedTags = setOf(
-        // Explicit child-coded categories.
-        "lolicon", "shotacon", "loli", "shota", "child", "children", "childlike", "child like",
-        "kid", "kids", "underage", "minor", "preteen", "pre teen", "tween", "juvenile",
-        "toddler", "infant", "baby", "young", "youth", "adolescent", "adolescence",
-        // School / school-age categories.
-        "school", "schoolboy", "schoolgirl", "school student", "school students",
-        "school uniform", "school gym uniform", "schoolgirl uniform", "school swimsuit", "school age",
-        "elementary", "elementary school", "elementary student", "grade school", "primary school", "middle school", "middle school student",
-        "junior high", "junior high school", "junior high student", "high school girl", "high school boy",
-        "kindergarten", "preschool", "pre school", "randoseru",
-        // Age-play / age-regression and related labels.
-        "age play", "ageplay", "age regression", "under 18", "under 18s", "little girl", "little boy",
-        "little sister", "little brother", "younger sister", "younger brother", "young girl", "young boy",
-        // Romanized Japanese tags and character terms.
-        "shougakusei", "shogakusei", "chugakusei", "chuugakusei", "youchienji", "youchien",
-        "youji", "kodomo", "jidou", "imouto", "otouto", "shoujo", "shojo", "shounen", "shonen",
-        // Japanese tag spellings.
-        "ÂπºÂ•≥", "Â∞ëÂ•≥", "Â∞ëÂπ¥", "Â∞èÂ≠¶Áîü", "‰∏≠Â≠¶Áîü", "ÂπºÂÖê", "ÂúíÂÖê", "ÂπºÁ®öÂúí", "„É≠„É™", "„Ç∑„Éß„Çø", "Â¶π", "Âºü",
-        // Short labels used in titles / tags for school-year groups.
+        "lolicon", "shotacon", "loli", "shota", "child", "children", "childlike",
+        "kid", "kids", "underage", "minor", "preteen", "pre teen", "tween",
+        "juvenile", "toddler", "infant", "baby", "young", "youth", "adolescent",
+        "school", "schoolboy", "schoolgirl", "school student", "school uniform",
+        "school swimsuit", "elementary", "grade school", "primary school",
+        "middle school", "junior high", "kindergarten", "preschool", "randoseru",
+        "age play", "ageplay", "age regression", "under 18", "little girl",
+        "little boy", "little sister", "little brother", "younger sister",
+        "younger brother", "young girl", "young boy",
+        "shougakusei", "shogakusei", "chugakusei", "chuugakusei",
+        "youchienji", "youchien", "youji", "kodomo", "jidou", "imouto",
+        "otouto", "shoujo", "shojo", "shounen", "shonen",
+        "\u5e7c\u5973", "\u5c11\u5973", "\u5c11\u5e74", "\u5c0f\u5b66\u751f",
+        "\u4e2d\u5b66\u751f", "\u5e7c\u5150", "\u5712\u5150",
+        "\u5e7c\u7a1a\u5712", "\u30ed\u30ea", "\u30b7\u30e7\u30bf",
+        "\u59b9", "\u5f1f",
         "js", "jc", "jk",
     ).map(::normalize).toSet()
 
     private val blockedTitlePattern = Regex(
-        listOf(
-            """(?iu)(?<![\p{L}\p{N}])(?:lolicon|shotacon|loli|shota|schoolgirl|schoolboy|school|school\s+swimsuit|randoseru|""",
-            """underage|minor|pre[ -]?teen|tween|juvenile|toddler|infant|kindergarten|preschool|pre[ -]?school|""",
-            """elementary(?:\s+school)?|grade\s+school|primary\s+school|middle\s+school|junior\s+high|high\s+school\s+(?:girl|boy|student)|""",
-            """child(?:ren|like)?|kid(?:s)?|baby|little\s+(?:girl|boy|sister|brother)|young\s+(?:girl|boy)|younger\s+(?:sister|brother)|""",
-            """teen(?:age|ager)?|shougakusei|shogakusei|chugakusei|chuugakusei|youchienji|youchien|youji|kodomo|jidou|imouto|otouto|""",
-            """shoujo|shojo|shounen|shonen|joshi\s+shougakusei|age[ -]*(?:play|regression)|under\s+18|ÂπºÂ•≥|Â∞ëÂ•≥|Â∞ëÂπ¥|Â∞èÂ≠¶Áîü|‰∏≠Â≠¶Áîü|ÂπºÂÖê|ÂúíÂÖê|ÂπºÁ®öÂúí|„É≠„É™|„Ç∑„Éß„Çø|Â¶π|Âºü)(?![\p{L}\p{N}])""",
-        ).joinToString(separator = ""),
+        """(?iu)(?<![\p{L}\p{N}])(?:lolicon|shotacon|loli|shota|schoolgirl|schoolboy|school|underage|minor|pre[ -]?teen|tween|juvenile|toddler|infant|kindergarten|preschool|elementary(?: school)?|grade school|primary school|middle school|junior high|child(?:ren|like)?|kids?|baby|little (?:girl|boy|sister|brother)|young (?:girl|boy)|younger (?:sister|brother)|teen(?:age|ager)?|shougakusei|shogakusei|chugakusei|chuugakusei|youchienji|youchien|youji|kodomo|jidou|imouto|otouto|shoujo|shojo|shounen|shonen|age[ -]*(?:play|regression)|under\s*18|js|jc|jk)(?![\p{L}\p{N}])""",
     )
 
-    private val japaneseUnderagePattern = Regex("ÂπºÂ¢ñÕÛñ¬GññÕÛñ¬GñÊ—Ûñ¬?ñ∂õûR}Ûí‚∑ñ∂õûR}ÛñÊÛñAÛñrKñAÛñÊÛû¢kñrIÛé∑é©Ûé
-ﬂéüé
-˝ÛñöÂÛñÚ|à§((ÄÄÄÅ¡…•ŸÖ—îÅŸÖ∞ÅÕç°ΩΩ±ââ…ïŸ•Ö—•ΩπAÖ——ï…∏ÄÙÅIïùï‡†(ÄÄÄÄÄÄÄÄà†˝•‘§†¸Ömqq¡Ì1ıqq¡Ì9ıt§†¸È)MÒ)Ò),§†¸Ömqq¡Ì1ıqq¡Ì9ıt§à∞(ÄÄÄÄ§((ÄÄÄÅ¡…•ŸÖ—îÅŸÖ∞Å’πëï…ÖùïùïAÖ——ï…∏ÄÙÅIïùï‡†(ÄÄÄÄÄÄÄÄà†˝•‘§†¸Ömqq¡Ì1ıqq¡Ì9ıt§†¸Èl¿¥Âu≈l¿¥›t•mqqÃµt®†¸ÈÂΩÒ‰ΩΩÒÂïÖ…Ã˝mqqÃµt©Ω±ëÒÂïÖ…mqqÃµt©Ω±ê§†¸Ömqq¡Ì1ıqq¡Ì9ıt§à∞(ÄÄÄÄ§((ÄÄÄÅô’∏Åâ±Ωç≠Ã°—•—±îËÅM—…•πú∞Å—ÖùÃËÅ%—ï…Öâ±îÒM—…•πú¯§ËÅ	ΩΩ±ïÖ∏ÅÏ(ÄÄÄÄÄÄÄÅ•òÄ°—•—±îπ•Õ	±Öπ¨†§§Å…ï—’…∏Å—…’î(ÄÄÄÄÄÄÄÅ•òÄ°â±Ωç≠ïëQ•—±ïAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—•—±î§§Å…ï—’…∏Å—…’î(ÄÄÄÄÄÄÄÅ•òÄ°©Ö¡ÖπïÕïUπëï…ÖùïAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—•—±î§§Å…ï—’…∏Å—…’î(ÄÄÄÄÄÄÄÅ•òÄ°Õç°ΩΩ±ââ…ïŸ•Ö—•ΩπAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—•—±î§§Å…ï—’…∏Å—…’î(ÄÄÄÄÄÄÄÅ•òÄ°’πëï…ÖùïùïAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—•—±î§§Å…ï—’…∏Å—…’î((ÄÄÄÄÄÄÄÅ…ï—’…∏Å—ÖùÃπÖπ‰ÅÏÅ—ÖúÄ¥¯(ÄÄÄÄÄÄÄÄÄÄÄÅŸÖ∞ÅπΩ…µÖ±•ÈïêÄÙÅπΩ…µÖ±•Èî°—Öú§(ÄÄÄÄÄÄÄÄÄÄÄÅπΩ…µÖ±•ÈïêÅ•∏Åâ±Ωç≠ïëQÖùÃÅÒ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅâ±Ωç≠ïëQ•—±ïAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—Öú§ÅÒ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅ©Ö¡ÖπïÕïUπëï…ÖùïAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—Öú§ÅÒ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÕç°ΩΩ±ââ…ïŸ•Ö—•ΩπAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—Öú§ÅÒ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅ’πëï…ÖùïùïAÖ——ï…∏πçΩπ—Ö•πÕ5Ö—ç°%∏°—Öú§(ÄÄÄÄÄÄÄÅÙ(ÄÄÄÅÙ((ÄÄÄÅ¡…•ŸÖ—îÅô’∏ÅπΩ…µÖ±•Èî°ŸÖ±’îËÅM—…•πú§ËÅM—…•πúÄÙÅ9Ω…µÖ±•Èï»(ÄÄÄÄÄÄÄÄππΩ…µÖ±•Èî°ŸÖ±’î∞Å9Ω…µÖ±•Èï»πΩ…¥π9-§(ÄÄÄÄÄÄÄÄπ±Ω›ï…çÖÕî†§(ÄÄÄÄÄÄÄÄπ…ï¡±Öçî°Iïùï‡†âmyqq¡Ì1ıqq¡Ì9ıt¨à§∞ÄàÄà§(ÄÄÄÄÄÄÄÄπ—…•¥†§)Ù(
+    private val japaneseUnderagePattern = Regex(
+        """(?:\u5e7c\u5973|\u5c11\u5973|\u5c11\u5e74|\u5c0f\u5b66\u751f|\u4e2d\u5b66\u751f|\u5e7c\u5150|\u5712\u5150|\u5e7c\u7a1a\u5712|\u30ed\u30ea|\u30b7\u30e7\u30bf|\u59b9|\u5f1f)""",
+    )
+
+    fun blocks(title: String, tags: List<String>): Boolean {
+        val normalizedTitle = normalize(title)
+        if (blockedTitlePattern.containsMatchIn(normalizedTitle) ||
+            japaneseUnderagePattern.containsMatchIn(title)
+        ) return true
+
+        return tags.any { tag ->
+            val normalized = normalize(tag)
+            normalized in blockedTags ||
+                blockedTags.any { blocked ->
+                    blocked.length > 2 && normalized.contains(blocked)
+                }
+        }
+    }
+
+    private fun normalize(value: String): String =
+        Normalizer.normalize(value, Normalizer.Form.NFKC)
+            .lowercase()
+            .replace(Regex("[^\\p{L}\\p{N}]+"), " ")
+            .trim()
+}
